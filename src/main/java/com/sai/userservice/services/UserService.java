@@ -25,8 +25,8 @@ public class UserService {
     }
 
     public UserDto getUserDetails(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
 
+        Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return null;
         }
@@ -35,6 +35,7 @@ public class UserService {
     }
 
     public UserDto setUserRoles(Long userId, List<Long> roleIds) {
+
         Optional<User> userOptional = userRepository.findById(userId);
         List<Role> roles = roleRepository.findAllByIdIn(roleIds);
 
