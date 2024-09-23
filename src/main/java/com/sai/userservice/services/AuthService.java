@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
+
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
 
@@ -31,6 +32,7 @@ public class AuthService {
     }
 
     public ResponseEntity<UserDto> login(String email, String password) {
+
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isEmpty()) {
@@ -38,7 +40,6 @@ public class AuthService {
         }
 
         User user = userOptional.get();
-
         if (!user.getPassword().equals(password)) {
             return null;
         }
@@ -46,6 +47,7 @@ public class AuthService {
         String token = RandomStringUtils.randomAlphanumeric(30);
 
         Session session = new Session();
+
         session.setSessionStatus(SessionStatus.ACTIVE);
         session.setToken(token);
         session.setUser(user);
@@ -59,8 +61,6 @@ public class AuthService {
         MultiValueMapAdapter<String, String> headers = new MultiValueMapAdapter<>(new HashMap<>());
         headers.add(HttpHeaders.SET_COOKIE, "auth-token:" + token);
 
-
-
         ResponseEntity<UserDto> response = new ResponseEntity<>(userDto, headers, HttpStatus.OK);
 //        response.getHeaders().add(HttpHeaders.SET_COOKIE, token);
 
@@ -68,6 +68,7 @@ public class AuthService {
     }
 
     public ResponseEntity<Void> logout(String token, Long userId) {
+
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
 
         if (sessionOptional.isEmpty()) {
@@ -75,7 +76,6 @@ public class AuthService {
         }
 
         Session session = sessionOptional.get();
-
         session.setSessionStatus(SessionStatus.ENDED);
 
         sessionRepository.save(session);
@@ -84,6 +84,7 @@ public class AuthService {
     }
 
     public UserDto signUp(String email, String password) {
+
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
@@ -94,8 +95,8 @@ public class AuthService {
     }
 
     public SessionStatus validate(String token, Long userId) {
-        Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
 
+        Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if (sessionOptional.isEmpty()) {
             return null;
         }

@@ -10,6 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class Session extends BaseModel {
+
     private String token;
     private Date expiringAt;
     @ManyToOne

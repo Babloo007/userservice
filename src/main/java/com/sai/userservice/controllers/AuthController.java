@@ -17,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     private AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -43,7 +44,6 @@ public class AuthController {
     @PostMapping("/validate")
     public ResponseEntity<SessionStatus> validateToken(ValidateTokenRequestDto request) {
         SessionStatus sessionStatus = authService.validate(request.getToken(), request.getUserId());
-
         return new ResponseEntity<>(sessionStatus, HttpStatus.OK);
     }
 
